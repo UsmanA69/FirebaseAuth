@@ -1,4 +1,4 @@
-import setTheData from "./SendData";
+import setTheData from "./SetData";
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
