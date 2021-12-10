@@ -14,11 +14,15 @@ import {
   onChildAdded,
   onValue,
 } from "../Config/FirebaseConfig";
+import {SEND_DATA} from '../Config/Redux/Actions/actions'
+import { useDispatch } from "react-redux";
 
 const NewLogin = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch()
 
   const navigate = useNavigate();
   const handleSubmition = (e) => {
@@ -34,14 +38,14 @@ const NewLogin = () => {
         // Signed in
         const userUid = userCredential.user.uid;
 
-        // onChildAdded(ref(database));
 
         onValue(ref(database, "users/" + userUid), (snapshot) => {
           const data = snapshot.val();
-        //   console.log(data);
-          // updateStarCount(postElement, data);
+         
 
-          navigate("/", { state: data });
+          dispatch(SEND_DATA(data))
+
+          navigate("/");
         });
         // ...
       })

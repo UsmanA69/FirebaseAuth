@@ -6,7 +6,6 @@ import { Box } from "@mui/system";
 import {
   auth,
   onAuthStateChanged,
-  signOut,
   // database,
   // onChildAdded,
   // child,
@@ -16,29 +15,33 @@ import {
   // set,
 } from "../Config/FirebaseConfig";
 import { useNavigate } from "react-router";
-import LogoutIcon from "@mui/icons-material/Logout";
 import MuiAppBar from "../Components/Navbar";
-import { useLocation } from "react-router";
+import { DELETE_DATA } from "../Config/Redux/Actions/actions";
+import { useSelector, useDispatch } from "react-redux";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const[userAuth,setUserAuth]=useState(false);
+  const [loading, setLoading] = useState(true);
+  const [userAuth, setUserAuth] = useState(false);
+
+  const myState = useSelector((state) => state.setTheData);
+  const dispatch = useDispatch();
+
+  const { type, obj } = myState;
+  console.log(obj);
 
   const navigate = useNavigate();
-  const location =useLocation()
-  console.log(location.state);
-
-  
+  // const location =useLocation()
+  // console.log(location.state);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
-        console.log("working");
         setLoggedIn(false);
         setLoading(false);
       } else {
-        setUserAuth(true)
+        setLoading(false);
+        setUserAuth(true);
         // User is signed out
         // ...
       }
@@ -48,10 +51,10 @@ const Home = () => {
   return (
     <>
       <div style={{ textAlign: "center" }}>
-        {!location.state ? (
+        {loading ? (
           <CircularProgress />
-          ) : (
-            <>
+        ) : (
+          <>
             <MuiAppBar />
             <h1>Home</h1>
             <Box>
@@ -69,24 +72,22 @@ const Home = () => {
                   </Link>
                 </>
               )}
-              {
-                userAuth?<><h3>
-                {location.state.userName}
-              </h3>
-              <h3>
-                {location.state.email}
-              </h3>
-              <h3>
-                {location.state.cnic}
-              </h3>
-              <h3>
-                {location.state.country}
-              </h3>
-              <h3>
-                {location.state.pNumber}
-              </h3></>:null
-              }
-              
+              {!obj ? null : (
+                <>
+                  {userAuth ? (
+                    <>
+                      <h3>{obj.userName}</h3>
+                      <h3>{obj.email}</h3>
+                      <h3>{obj.cnic}</h3>
+                      <h3>{obj.country}</h3>
+                      <h3>{obj.pNumber}</h3>
+                      <button onClick={() => dispatch(DELETE_DATA())}>
+                        delete
+                      </button>
+                    </>
+                  ) : null}
+                </>
+              )}
             </Box>
           </>
         )}

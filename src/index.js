@@ -1,19 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-import store from './Config/Redux/Store';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import myStore from "./Config/Redux/Store";
 
+myStore.subscribe(() => console.log(myStore.getState()));
 
 ReactDOM.render(
   <React.StrictMode>
-  {/* <Provider store={store}>
-  </Provider> */}
-    <App />
+    <Provider store={myStore}>
+      <App />
+    </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

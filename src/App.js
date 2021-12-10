@@ -4,11 +4,8 @@ import Home from "./Screens/Home";
 import Error from "./Screens/Error";
 import NewLogin from "./Screens/NewLogin";
 import NewSignUp from "./Screens/NewSignUp";
-import store from "./Config/Redux/Store";
-import {BUG_ADDED} from './Config/Redux/ActionTypes'
 
 function App() {
-  // store.dispatch(BUG_ADDED("Bug 1"));
 
   return (
     <>
