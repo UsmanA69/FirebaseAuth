@@ -8,6 +8,9 @@ import {
   auth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  database,
+  ref,
+  onChildAdded,onValue
 } from "../Config/FirebaseConfig";
 
 const Login = () => {
@@ -27,7 +30,18 @@ const Login = () => {
     signInWithEmailAndPassword(auth, dataObj.email, dataObj.password)
       .then((userCredential) => {
         // Signed in
-        const user = userCredential.user;
+        const userUid = userCredential.user.uid;
+
+        // onChildAdded(ref(database));
+
+        onValue(ref(database, "users/" + userUid), (snapshot) => {
+          const data = snapshot.val();
+          console.log(data);
+          // updateStarCount(postElement, data);
+
+
+          navigate('/',{state:data})
+        });
         // ...
       })
       .catch((error) => {
@@ -36,7 +50,6 @@ const Login = () => {
         alert(errorMessage, errorCode);
       });
   };
-
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {

@@ -9,6 +9,9 @@ import {
   auth,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  database,
+  ref,
+  set,
 } from "../Config/FirebaseConfig";
 
 const SignUp = () => {
@@ -31,8 +34,9 @@ const SignUp = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        // console.log(user);
-        // ...
+        const userUid = userCredential.user.uid;
+
+        set(ref(database, "users/" + userUid), dataObj);
       })
       .catch((error) => {
         const errorCode = error.code;
